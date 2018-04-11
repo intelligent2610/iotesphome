@@ -13,7 +13,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
             method, path, version = request_line[:-2].decode().split(None, 2)
             #websockets.accept()
         except Exception as e:
-            print(e.args)
+            print("websockets.accept() " + e.args)
             self.writer.close()
             self.ws_server.unregister(self)
 
@@ -30,7 +30,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
             try:
                 return await self.http_handler(method, path, version)
             except Exception as e:
-                print(e)
+                print("Check headers etc." + e)
             finally:
 
                 self.writer.close()
@@ -71,14 +71,13 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
                 ''+self.rddata+'',
             ])
         except Exception as e:
-            print(e)
+            print("http_handler " + e)
         self.writer.write(response.encode())
 
 def updateData(data):
     HttpWSSProtocol.rddata = data
 
 async def ws_handler(websocket, path):
-    game_name = 'g1'
     try:
         HttpWSSProtocol.rwebsocket = websocket
         await websocket.send(json.dumps({'event': 'OK'}))
@@ -87,7 +86,7 @@ async def ws_handler(websocket, path):
             data = await websocket.recv()
             updateData(data)
     except Exception as e:
-        print(e)
+        print("ws_handler " +e)
     finally:
         print("")
 
