@@ -79,9 +79,9 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
         print("http_handler")
         response = ''
         try:
-            print("googleRequest " + str(googleRequest))
             googleRequest = self.reader._buffer.decode('utf-8')
             googleRequestJson = json.loads(googleRequest)
+            print("googleRequest " + str(googleRequest))
 
             #{"location": "living", "state": "on", "device": "lights"}
             if 'what' in googleRequestJson['result']['resolvedQuery']:
