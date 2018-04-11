@@ -13,7 +13,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
             method, path, version = request_line[:-2].decode().split(None, 2)
             #websockets.accept()
         except Exception as e:
-            print("websockets.accept() " + e.args)
+            print("websockets.accept() " + str(e.args))
             self.writer.close()
             self.ws_server.unregister(self)
 
@@ -30,7 +30,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
             try:
                 return await self.http_handler(method, path, version)
             except Exception as e:
-                print("Check headers etc." + e.args)
+                print("Check headers etc." + str(e.args))
             finally:
 
                 self.writer.close()
@@ -71,7 +71,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
                 ''+self.rddata+'',
             ])
         except Exception as e:
-            print("http_handler " + e.args)
+            print("http_handler " + str(e.args))
         self.writer.write(response.encode())
 
 def updateData(data):
@@ -84,10 +84,10 @@ async def ws_handler(websocket, path):
         data ='{"empty":"empty"}'
         while True:
             data = await websocket.recv()
-            print("ws_handler reice " + data.value)
+            print("ws_handler reice " + str(data))
             updateData(data)
     except Exception as e:
-        print("ws_handler " +e.args)
+        print("ws_handler " +str(e.args))
     finally:
         print("")
 
